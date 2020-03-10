@@ -4,6 +4,8 @@
 [![Version](https://img.shields.io/cocoapods/v/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
 [![License](https://img.shields.io/cocoapods/l/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
 [![Platform](https://img.shields.io/cocoapods/p/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
+[![Support](https://img.shields.io/badge/BYImagePreview.svg.svg?style=flat)](https://www.apple.com/nl/ios/) 
+![Language](https://img.shields.io/badge/Language-%20swift%20%20-blue.svg)
 
 ## Example
 
@@ -22,7 +24,7 @@ pod 'BYImagePreview'
 
 ## Author
 
-Beryter, mg459046365@gmail.com
+Beryter, 459046365@qq.com
 
 ## License
 

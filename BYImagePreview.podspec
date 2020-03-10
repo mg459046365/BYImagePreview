@@ -29,8 +29,10 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
-  s.swift_version = '5.0'
   s.platform = :ios, '10.0'
+  if s.respond_to? 'swift_version'
+    s.swift_version = '5.0'
+  end
 
   s.source_files = 'BYImagePreview/Classes/**/*'
   
@@ -38,6 +40,7 @@ TODO: Add long description of the pod here.
     'BYImagePreview' => ['BYImagePreview/Assets/*.png']
   }
 
+  s.requires_arc = true
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit', 'Foundation'
    s.dependency 'Kingfisher', '~> 5.7'
