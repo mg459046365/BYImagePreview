@@ -14,7 +14,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 - Xcode 11 or later
 - iOS 10.0 or later
-- ARC
 - Swift 5.0 or later
 
 ## Installation
