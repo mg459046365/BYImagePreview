@@ -1,6 +1,5 @@
 # BYImagePreview
 
-[![CI Status](https://img.shields.io/travis/mg459046365/BYImagePreview.svg?style=flat)](https://travis-ci.org/mg459046365/BYImagePreview)
 [![Version](https://img.shields.io/cocoapods/v/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
 [![License](https://img.shields.io/cocoapods/l/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
 [![Platform](https://img.shields.io/cocoapods/p/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
