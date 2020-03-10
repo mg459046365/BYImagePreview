@@ -25,6 +25,7 @@
       "BYImagePreview/Assets/*.png"
     ]
   },
+  "requires_arc": true,
   "frameworks": [
     "UIKit",
     "Foundation"

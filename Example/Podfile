@@ -1,4 +1,5 @@
 use_frameworks!
+platform :ios, '10.0'
 
 target 'BYImagePreview_Example' do
   pod 'BYImagePreview', :path => '../'
@@ -7,6 +8,7 @@ target 'BYImagePreview_Example' do
     inherit! :search_paths
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
+  pod 'Kingfisher', '~> 5.7'
     
   end
 end
