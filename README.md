@@ -22,7 +22,7 @@ pod 'BYImagePreview'
 
 ## Author
 
-mg459046365, mg459046365@gmail.com
+Beryter, mg459046365@gmail.com
 
 ## License
 
