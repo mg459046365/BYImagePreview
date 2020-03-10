@@ -1,0 +1,6 @@
+framework module BYImagePreview {
+  umbrella header "BYImagePreview-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,25 @@
+PODS:
+  - BYImagePreview (0.1.0):
+    - Kingfisher (~> 5.7)
+  - Kingfisher (5.13.2):
+    - Kingfisher/Core (= 5.13.2)
+  - Kingfisher/Core (5.13.2)
+
+DEPENDENCIES:
+  - BYImagePreview (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+
+EXTERNAL SOURCES:
+  BYImagePreview:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  BYImagePreview: 792ee1b9a65e2cacba245368adb5fad443e086ab
+  Kingfisher: d342c8354c10c3d85a27d6d4c42c41285924b898
+
+PODFILE CHECKSUM: c7ffc13ddf7131ca379531bc292bb8bc43ff35a2
+
+COCOAPODS: 1.9.0
