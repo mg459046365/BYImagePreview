@@ -45,6 +45,12 @@
 		856FC7BCEC2912CB97E04B28 /* BYImagePreview.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = BYImagePreview.podspec; path = ../BYImagePreview.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AFB11B31E487ACFBE3AA7E51 /* Pods-BYImagePreview_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BYImagePreview_Tests.debug.xcconfig"; path = "Target Support Files/Pods-BYImagePreview_Tests/Pods-BYImagePreview_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B37679623D681D778A9FDE25 /* Pods-BYImagePreview_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BYImagePreview_Example.debug.xcconfig"; path = "Target Support Files/Pods-BYImagePreview_Example/Pods-BYImagePreview_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		B41613E32417599D000D5174 /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B41613E42417599D000D5174 /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B41613E52417599D000D5174 /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47EAE1824175AEB009DEBEE /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47EAE1A24175AEB009DEBEE /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47EAE1C24175AEB009DEBEE /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9E088D3C95F6E5B449EAB3 /* Pods_BYImagePreview_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BYImagePreview_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBA5948998E5A0C56F06EF70 /* Pods-BYImagePreview_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BYImagePreview_Example.release.xcconfig"; path = "Target Support Files/Pods-BYImagePreview_Example/Pods-BYImagePreview_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +78,12 @@
 		19BE3B97284895DADDE0D040 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B47EAE1824175AEB009DEBEE /* RxCocoa.framework */,
+				B47EAE1A24175AEB009DEBEE /* RxRelay.framework */,
+				B47EAE1C24175AEB009DEBEE /* RxSwift.framework */,
+				B41613E32417599D000D5174 /* RxCocoa.framework */,
+				B41613E42417599D000D5174 /* RxRelay.framework */,
+				B41613E52417599D000D5174 /* RxSwift.framework */,
 				7A86D2D5776775AA166808C1 /* Pods_BYImagePreview_Example.framework */,
 				BA9E088D3C95F6E5B449EAB3 /* Pods_BYImagePreview_Tests.framework */,
 			);
@@ -189,6 +201,7 @@
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
+				3C3E5E49BA8B1D2D31978012 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -305,6 +318,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3C3E5E49BA8B1D2D31978012 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BYImagePreview_Tests/Pods-BYImagePreview_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BYImagePreview_Tests/Pods-BYImagePreview_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C11D3CDDC11631332E481B16 /* [CP] Embed Pods Frameworks */ = {

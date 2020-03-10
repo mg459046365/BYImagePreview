@@ -1,25 +1,39 @@
 PODS:
-  - BYImagePreview (0.1.0):
+  - BYImagePreview (1.0.0):
     - Kingfisher (~> 5.7)
   - Kingfisher (5.13.2):
     - Kingfisher/Core (= 5.13.2)
   - Kingfisher/Core (5.13.2)
+  - RxCocoa (5.1.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.0)
 
 DEPENDENCIES:
   - BYImagePreview (from `../`)
+  - RxCocoa (~> 5)
+  - RxSwift (~> 5)
 
 SPEC REPOS:
   trunk:
     - Kingfisher
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 EXTERNAL SOURCES:
   BYImagePreview:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BYImagePreview: 792ee1b9a65e2cacba245368adb5fad443e086ab
+  BYImagePreview: 32c59c2aa5dca85964a0203dcd55c7b510cbabf7
   Kingfisher: d342c8354c10c3d85a27d6d4c42c41285924b898
+  RxCocoa: 13d2a4d7546a34b8ececae8c281e4ea1dbb94f2b
+  RxRelay: a168bd6caf712d00c676ac344e9295afc93b418e
+  RxSwift: ad5874f24bb0dbffd1e9bb8443604e3578796c7a
 
-PODFILE CHECKSUM: c7ffc13ddf7131ca379531bc292bb8bc43ff35a2
+PODFILE CHECKSUM: 6a4454060df7e10b98743faa6538649be474445e
 
 COCOAPODS: 1.9.0

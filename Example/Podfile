@@ -5,7 +5,8 @@ target 'BYImagePreview_Example' do
 
   target 'BYImagePreview_Tests' do
     inherit! :search_paths
-
+  pod 'RxSwift', '~> 5'
+  pod 'RxCocoa', '~> 5'
     
   end
 end

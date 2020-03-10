@@ -8,7 +8,7 @@
 import Kingfisher
 import UIKit
 
-enum BYImagePreviewSource {
+public enum BYImagePreviewSource {
     /// 图片链接String类型
     case link(String)
     /// 图片链接URL类型
@@ -19,7 +19,7 @@ enum BYImagePreviewSource {
     case none
 }
 
-protocol BYImagePreviewDelegate {
+public protocol BYImagePreviewDelegate {
     /// 图片的个数
     /// - Parameter preview: 预览视图
     func by_numberOfImages(in preview: BYImagePreviewView) -> Int
@@ -51,7 +51,7 @@ protocol BYImagePreviewDelegate {
     func by_imagePreview(_ preview: BYImagePreviewView, saveImageAt index: Int, withImage image: UIImage?)
 }
 
-extension BYImagePreviewDelegate {
+public extension BYImagePreviewDelegate {
     func by_imagePreview(_ preview: BYImagePreviewView, placeholderImageAt index: Int) -> UIImage? {
         nil
     }
@@ -63,35 +63,35 @@ extension BYImagePreviewDelegate {
     func by_imagePreview(_ preview: BYImagePreviewView, saveImageAt index: Int, withImage image: UIImage?) {}
 }
 
-class BYImagePreviewView: UIViewController {
+public class BYImagePreviewView: UIViewController {
     private let animationDuration = 0.3
     /// 当前展示图片的索引
     private var curDisplayIndex = 0
     /// 是否显示索引
-    var showIndexLabel = false
+    public var showIndexLabel = false
     /// 是否支持保存图片
-    var supportSaveImage = false
+    public var supportSaveImage = false
     /// 代理
-    var delegate: BYImagePreviewDelegate?
+    public var delegate: BYImagePreviewDelegate?
     /// 默认展示图片的索引
-    var defaultDisplayIndex = 0
+    public var defaultDisplayIndex = 0
 
     private var animationsEnabled = false
 
     /// 拖动手势消失时的过渡视图
     private var transitionView: UIImageView?
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIView.setAnimationsEnabled(true)
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         UIView.setAnimationsEnabled(animationsEnabled)
     }
@@ -181,7 +181,7 @@ class BYImagePreviewView: UIViewController {
         imv.center = CGPoint(x: x, y: y)
     }
 
-    func show(in controller: UIViewController, fromView: UIImageView) {
+   public func show(in controller: UIViewController, fromView: UIImageView) {
         view.bounds = UIScreen.main.bounds
         view.backgroundColor = UIColor(white: 0, alpha: 0)
         collectionView.isHidden = true
@@ -350,15 +350,15 @@ class BYImagePreviewView: UIViewController {
 }
 
 extension BYImagePreviewView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         max(delegate?.by_numberOfImages(in: self) ?? 0, 0)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BYImagePreviewCell.self), for: indexPath)
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let dl = delegate else { return }
         let cl = cell as! BYImagePreviewCell
         let placeholderImage = dl.by_imagePreview(self, placeholderImageAt: indexPath.item)
@@ -370,14 +370,14 @@ extension BYImagePreviewView: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cl = cell as! BYImagePreviewCell
         cl.resetZoom()
     }
 }
 
 extension BYImagePreviewView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetX = scrollView.contentOffset.x
         let idx = offsetX / scrollView.frame.width
         curDisplayIndex = Int(idx)
