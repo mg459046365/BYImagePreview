@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'BYImagePreview_Example' do
+  pod 'BYImagePreview', :path => '../'
+
+  target 'BYImagePreview_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
