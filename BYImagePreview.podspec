@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BYImagePreview'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = '简易图片预览器'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+ iOS简易图片预览器，支持Image, URL, String
                        DESC
 
   s.homepage         = 'https://github.com/mg459046365/BYImagePreview'

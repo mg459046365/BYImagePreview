@@ -49,6 +49,10 @@ public protocol BYImagePreviewDelegate {
     ///   - index: 索引
     ///   - image: 该索引下的图片，有可能为空，比如图片还未下载完成或者下载失败
     func by_imagePreview(_ preview: BYImagePreviewView, saveImageAt index: Int, withImage image: UIImage?)
+
+    /// 预览视图消失
+    /// - Parameter preview: 预览视图
+    func by_imagePreviewDidDismiss(_ preview: BYImagePreviewView)
 }
 
 public extension BYImagePreviewDelegate {
@@ -94,6 +98,9 @@ public class BYImagePreviewView: UIViewController {
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         UIView.setAnimationsEnabled(animationsEnabled)
+    }
+    deinit {
+//        print("预览视图释放！")
     }
 
     private func setupView() {
@@ -151,6 +158,7 @@ public class BYImagePreviewView: UIViewController {
                     self.transitionView?.removeFromSuperview()
                     self.view.removeFromSuperview()
                     self.removeFromParent()
+                    self.delegate?.by_imagePreviewDidDismiss(self)
                 }
                 return
             }
@@ -181,7 +189,7 @@ public class BYImagePreviewView: UIViewController {
         imv.center = CGPoint(x: x, y: y)
     }
 
-   public func show(in controller: UIViewController, fromView: UIImageView) {
+    public func show(in controller: UIViewController, fromView: UIImageView) {
         view.bounds = UIScreen.main.bounds
         view.backgroundColor = UIColor(white: 0, alpha: 0)
         collectionView.isHidden = true
@@ -229,6 +237,7 @@ public class BYImagePreviewView: UIViewController {
             }) { _ in
                 self.view.removeFromSuperview()
                 self.removeFromParent()
+                self.delegate?.by_imagePreviewDidDismiss(self)
             }
             return
         }
@@ -251,6 +260,7 @@ public class BYImagePreviewView: UIViewController {
             transitionView.removeFromSuperview()
             self.view.removeFromSuperview()
             self.removeFromParent()
+            self.delegate?.by_imagePreviewDidDismiss(self)
         }
     }
 

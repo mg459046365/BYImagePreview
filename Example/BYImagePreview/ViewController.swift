@@ -100,6 +100,10 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: BYImagePreviewDelegate {
+    func by_imagePreviewDidDismiss(_ preview: BYImagePreviewView) {
+        print("预览视图关闭")
+    }
+    
     func by_numberOfImages(in preview: BYImagePreviewView) -> Int {
         3
     }
