@@ -1,10 +1,10 @@
 # BYImagePreview
 
-[![Version](https://img.shields.io/cocoapods/v/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
+[![Version](https://img.shields.io/cocoapods/v/BYImagePreview.svg?style=flat&color=orange)](https://cocoapods.org/pods/BYImagePreview)
 [![License](https://img.shields.io/cocoapods/l/BYImagePreview.svg?style=flat&color=orange)](https://cocoapods.org/pods/BYImagePreview)
-[![Platform](https://img.shields.io/cocoapods/p/BYImagePreview.svg?style=flat)](https://cocoapods.org/pods/BYImagePreview)
-[![Support](https://img.shields.io/badge/support-iOS%2010%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/) 
-![Language](https://img.shields.io/badge/Language-%20swift%20%20-blue.svg)
+[![Platform](https://img.shields.io/cocoapods/p/BYImagePreview.svg?style=flat&color=orange)](https://cocoapods.org/pods/BYImagePreview)
+[![Support](https://img.shields.io/badge/support-iOS%2010%20-blue.svg?style=flat&color=orange)](https://www.apple.com/nl/ios/) 
+![Language](https://img.shields.io/badge/Language-%20swift%20%20-blue.svg?style=flat&color=orange)
 
 ## Example
 
