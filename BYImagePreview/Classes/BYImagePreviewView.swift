@@ -99,6 +99,7 @@ public class BYImagePreviewView: UIViewController {
         super.viewDidDisappear(animated)
         UIView.setAnimationsEnabled(animationsEnabled)
     }
+
     deinit {
 //        print("预览视图释放！")
     }
@@ -189,7 +190,7 @@ public class BYImagePreviewView: UIViewController {
         imv.center = CGPoint(x: x, y: y)
     }
 
-    public func show(in controller: UIViewController, fromView: UIImageView) {
+    public func show(in controller: UIViewController, fromView: UIImageView? = nil) {
         view.bounds = UIScreen.main.bounds
         view.backgroundColor = UIColor(white: 0, alpha: 0)
         collectionView.isHidden = true
@@ -203,6 +204,14 @@ public class BYImagePreviewView: UIViewController {
         if defaultDisplayIndex > 0, defaultDisplayIndex < (delegate?.by_numberOfImages(in: self) ?? 0) {
             collectionView.setContentOffset(CGPoint(x: view.bounds.width * CGFloat(defaultDisplayIndex), y: 0), animated: false)
             curDisplayIndex = defaultDisplayIndex
+        }
+        guard let fromView = fromView else {
+            UIView.animate(withDuration: animationDuration, animations: {
+                self.view.backgroundColor = UIColor(white: 0, alpha: 1)
+            }) { _ in
+                self.collectionView.isHidden = false
+            }
+            return
         }
 
         // 图片起始位置
