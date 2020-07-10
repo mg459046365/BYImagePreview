@@ -84,6 +84,8 @@ public class BYImagePreviewView: UIViewController {
 
     /// 拖动手势消失时的过渡视图
     private var transitionView: UIImageView?
+    /// 开始展示的视图
+    private var displayFromView: UIView?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +123,9 @@ public class BYImagePreviewView: UIViewController {
     }
 
     @objc private func dismissWithPanGesture(_ gesture: UIPanGestureRecognizer) {
-        let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as! BYImagePreviewCell
+        guard let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as? BYImagePreviewCell else {
+            return
+        }
         guard let im = cl.image else { return }
         if cl.scale > 1 { return }
         // 当前手指点击的点
@@ -191,6 +195,7 @@ public class BYImagePreviewView: UIViewController {
     }
 
     public func show(in controller: UIViewController, fromView: UIImageView? = nil) {
+        displayFromView = fromView
         view.bounds = UIScreen.main.bounds
         view.backgroundColor = UIColor(white: 0, alpha: 0)
         collectionView.isHidden = true
@@ -240,7 +245,22 @@ public class BYImagePreviewView: UIViewController {
 
     private func dismiss() {
         let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as! BYImagePreviewCell
-        guard let im = cl.image, let dismissToView = delegate?.by_imagePreview(self, dismissWithMoveToPositionViewAt: curDisplayIndex) else {
+
+        guard let im = cl.image else {
+            UIView.animate(withDuration: animationDuration, animations: {
+                self.view.alpha = 0
+            }) { _ in
+                self.view.removeFromSuperview()
+                self.removeFromParent()
+                self.delegate?.by_imagePreviewDidDismiss(self)
+            }
+            return
+        }
+        var desV = delegate?.by_imagePreview(self, dismissWithMoveToPositionViewAt: curDisplayIndex)
+        if let nm = delegate?.by_numberOfImages(in: self), nm == 1, desV == nil {
+            desV = displayFromView
+        }
+        guard let dismissToView = desV else {
             UIView.animate(withDuration: animationDuration, animations: {
                 self.view.alpha = 0
             }) { _ in
@@ -355,7 +375,7 @@ public class BYImagePreviewView: UIViewController {
         btn.setImage(UIImage(named: "save"), for: .normal)
         btn.sizeToFit()
         var fm = btn.frame
-        fm.origin.x = 25
+        fm.origin.x = view.bounds.width - 25 - btn.frame.width
         fm.origin.y = view.bounds.height - 30 - fm.height
         fm.size.width = fm.width + 10
         fm.size.height = fm.height + 15

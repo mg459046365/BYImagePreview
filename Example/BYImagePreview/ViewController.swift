@@ -48,6 +48,8 @@ class ViewController: UIViewController {
         let vc = BYImagePreviewView()
         vc.delegate = self
         vc.defaultDisplayIndex = 2
+        vc.showIndexLabel = true
+        vc.supportSaveImage = true
         vc.show(in: self, fromView: imageView3)
     }
 
