@@ -43,6 +43,13 @@ public protocol BYImagePreviewDelegate {
     ///   - index: 图片的索引
     func by_imagePreview(_ preview: BYImagePreviewView, dismissWithMoveToPositionViewAt index: Int) -> UIView?
 
+    /// 在该索引下关闭预览视图，预览视图将调整frame并移动到目标坐标frame处关闭，该方法返回目标frame。
+    /// 如果不实现或者返回空，则预览视图直接关闭
+    /// - Parameters:
+    ///   - preview: 预览视图
+    ///   - index: 图片的索引
+    func by_imagePreview(_ preview: BYImagePreviewView, dismissWithMoveToPositionAt index: Int) -> CGRect?
+
     /// 点击保存图片时，返回需要保存的图片。
     /// - Parameters:
     ///   - preview: 预览视图
@@ -53,18 +60,27 @@ public protocol BYImagePreviewDelegate {
     /// 预览视图消失
     /// - Parameter preview: 预览视图
     func by_imagePreviewDidDismiss(_ preview: BYImagePreviewView)
+
+    /// 将要显示该索引下的图片
+    /// - Parameters:
+    ///   - preview: 预览视图
+    ///   - index: 索引
+    func by_imagePreview(_ preview: BYImagePreviewView, willDisplayAt index: Int)
+
+    /// 该索引下的图片消失
+    /// - Parameters:
+    ///   - preview: 预览视图
+    ///   - index: 索引
+    func by_imagePreview(_ preview: BYImagePreviewView, didEndDisplayingAt index: Int)
 }
 
 public extension BYImagePreviewDelegate {
-    func by_imagePreview(_ preview: BYImagePreviewView, placeholderImageAt index: Int) -> UIImage? {
-        nil
-    }
-
-    func by_imagePreview(_ preview: BYImagePreviewView, dismissWithMoveToPositionViewAt index: Int) -> UIView? {
-        nil
-    }
-
+    func by_imagePreview(_ preview: BYImagePreviewView, placeholderImageAt index: Int) -> UIImage? { nil }
+    func by_imagePreview(_ preview: BYImagePreviewView, dismissWithMoveToPositionViewAt index: Int) -> UIView? { nil }
+    func by_imagePreview(_ preview: BYImagePreviewView, dismissWithMoveToPositionAt index: Int) -> CGRect? { nil }
     func by_imagePreview(_ preview: BYImagePreviewView, saveImageAt index: Int, withImage image: UIImage?) {}
+    func by_imagePreview(_ preview: BYImagePreviewView, willDisplayAt index: Int) {}
+    func by_imagePreview(_ preview: BYImagePreviewView, didEndDisplayingAt index: Int) {}
 }
 
 public class BYImagePreviewView: UIViewController {
@@ -73,31 +89,37 @@ public class BYImagePreviewView: UIViewController {
     private var curDisplayIndex = 0
     /// 是否显示索引
     public var showIndexLabel = false
+    /// 是否显示页码指示器
+    public var showPageIndicator = false
+    /// 页码指示器的Top
+    public var pageIndicatorTop: CGFloat = 0
     /// 是否支持保存图片
     public var supportSaveImage = false
     /// 代理
     public var delegate: BYImagePreviewDelegate?
     /// 默认展示图片的索引
     public var defaultDisplayIndex = 0
+    /// 图片的展示方式
+    public var imageDisplayMode = UIView.ContentMode.scaleToFill
 
     private var animationsEnabled = false
 
     /// 拖动手势消失时的过渡视图
     private var transitionView: UIImageView?
-    /// 开始展示的视图
-    private var displayFromView: UIView?
+    /// 从某个视图弹出
+    private var fromView: UIImageView?
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIView.setAnimationsEnabled(true)
     }
 
-    public override func viewDidDisappear(_ animated: Bool) {
+    override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         UIView.setAnimationsEnabled(animationsEnabled)
     }
@@ -111,9 +133,11 @@ public class BYImagePreviewView: UIViewController {
         view.isUserInteractionEnabled = true
         automaticallyAdjustsScrollViewInsets = false
         view.addSubview(collectionView)
+        view.addSubview(pageControl)
         view.addSubview(countLabel)
         view.addSubview(tipLabel)
         view.addSubview(saveButton)
+        pageControl.isHidden = !showPageIndicator
         countLabel.isHidden = !showIndexLabel
         saveButton.isHidden = !supportSaveImage
 
@@ -123,9 +147,7 @@ public class BYImagePreviewView: UIViewController {
     }
 
     @objc private func dismissWithPanGesture(_ gesture: UIPanGestureRecognizer) {
-        guard let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as? BYImagePreviewCell else {
-            return
-        }
+        let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as! BYImagePreviewCell
         guard let im = cl.image else { return }
         if cl.scale > 1 { return }
         // 当前手指点击的点
@@ -144,9 +166,11 @@ public class BYImagePreviewView: UIViewController {
 
         if gesture.state == .began {
             transitionView = UIImageView(frame: originalFrame)
+            transitionView?.contentMode = imageDisplayMode
             transitionView?.image = im
             view.addSubview(transitionView!)
             collectionView.isHidden = true
+            pageControl.isHidden = true
             countLabel.isHidden = true
             saveButton.isHidden = true
         } else if gesture.state == .ended || gesture.state == .failed {
@@ -175,6 +199,7 @@ public class BYImagePreviewView: UIViewController {
             }) { _ in
                 self.transitionView?.removeFromSuperview()
                 self.collectionView.isHidden = false
+                self.pageControl.isHidden = !self.showPageIndicator
                 self.countLabel.isHidden = !self.showIndexLabel
                 self.saveButton.isHidden = !self.supportSaveImage
             }
@@ -195,9 +220,9 @@ public class BYImagePreviewView: UIViewController {
     }
 
     public func show(in controller: UIViewController, fromView: UIImageView? = nil) {
-        displayFromView = fromView
+        self.fromView = fromView
         view.bounds = UIScreen.main.bounds
-        view.backgroundColor = UIColor(white: 0, alpha: 0)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0)
         collectionView.isHidden = true
 
         UIApplication.shared.keyWindow?.addSubview(view)
@@ -210,19 +235,21 @@ public class BYImagePreviewView: UIViewController {
             collectionView.setContentOffset(CGPoint(x: view.bounds.width * CGFloat(defaultDisplayIndex), y: 0), animated: false)
             curDisplayIndex = defaultDisplayIndex
         }
+        pageControl.currentPage = curDisplayIndex
+        countLabel.text = "\(curDisplayIndex)/\(delegate?.by_numberOfImages(in: self) ?? 0)"
+        // 图片起始位置
         guard let fromView = fromView else {
             UIView.animate(withDuration: animationDuration, animations: {
-                self.view.backgroundColor = UIColor(white: 0, alpha: 1)
+                self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
             }) { _ in
                 self.collectionView.isHidden = false
             }
             return
         }
-
-        // 图片起始位置
         let originalFrame = fromView.superview!.convert(fromView.frame, to: view)
         // 过渡视图
         let transitionView = UIImageView(frame: originalFrame)
+        transitionView.contentMode = imageDisplayMode
         transitionView.image = fromView.image
         view.addSubview(transitionView)
 
@@ -236,8 +263,9 @@ public class BYImagePreviewView: UIViewController {
         }
         UIView.animate(withDuration: animationDuration, animations: {
             transitionView.frame = destinationFrame
-            self.view.backgroundColor = UIColor(white: 0, alpha: 1)
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(1)
         }) { _ in
+            self.saveButton.isHidden = !self.supportSaveImage
             self.collectionView.isHidden = false
             transitionView.removeFromSuperview()
         }
@@ -245,7 +273,6 @@ public class BYImagePreviewView: UIViewController {
 
     private func dismiss() {
         let cl = collectionView.cellForItem(at: IndexPath(item: curDisplayIndex, section: 0)) as! BYImagePreviewCell
-
         guard let im = cl.image else {
             UIView.animate(withDuration: animationDuration, animations: {
                 self.view.alpha = 0
@@ -258,9 +285,17 @@ public class BYImagePreviewView: UIViewController {
         }
         var desV = delegate?.by_imagePreview(self, dismissWithMoveToPositionViewAt: curDisplayIndex)
         if let nm = delegate?.by_numberOfImages(in: self), nm == 1, desV == nil {
-            desV = displayFromView
+            desV = fromView
         }
-        guard let dismissToView = desV else {
+        var desFrame: CGRect?
+        if let dismissToView = desV {
+            desFrame = dismissToView.superview!.convert(dismissToView.frame, to: view)
+        }
+        if desFrame == nil {
+            desFrame = delegate?.by_imagePreview(self, dismissWithMoveToPositionAt: curDisplayIndex)
+        }
+        // 图片将要移动到的最终位置
+        guard let destinationFrame = desFrame else {
             UIView.animate(withDuration: animationDuration, animations: {
                 self.view.alpha = 0
             }) { _ in
@@ -272,10 +307,9 @@ public class BYImagePreviewView: UIViewController {
         }
         // 将cell中图片的位置转换到当前controller跟视图的坐标系中，获取过渡图片的起始位置
         let originalFrame = cl.imageView.superview!.convert(cl.imageView.frame, to: view)
-        // 图片将要移动到的最终位置
-        let destinationFrame = dismissToView.superview!.convert(dismissToView.frame, to: view)
         // 过渡视图
         let transitionView = UIImageView(frame: originalFrame)
+        transitionView.contentMode = imageDisplayMode
         transitionView.image = im
         view.addSubview(transitionView)
         collectionView.isHidden = true
@@ -284,7 +318,7 @@ public class BYImagePreviewView: UIViewController {
 
         UIView.animate(withDuration: animationDuration, animations: {
             transitionView.frame = destinationFrame
-            self.view.backgroundColor = UIColor(white: 0, alpha: 0)
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
         }) { _ in
             transitionView.removeFromSuperview()
             self.view.removeFromSuperview()
@@ -346,6 +380,16 @@ public class BYImagePreviewView: UIViewController {
         return cl
     }()
 
+    private lazy var pageControl: UIPageControl = {
+        let page = UIPageControl(frame: CGRect(x: 20, y: self.view.frame.height - pageIndicatorTop - 26, width: self.view.frame.width - 40, height: 10))
+        page.pageIndicatorTintColor = UIColor.white.withAlphaComponent(0.31)
+        page.currentPageIndicatorTintColor = .white
+        page.isHidden = !showPageIndicator
+        page.numberOfPages = delegate?.by_numberOfImages(in: self) ?? 0
+        page.currentPage = curDisplayIndex + 1
+        return page
+    }()
+
     private lazy var tipLabel: UILabel = {
         let lb = UILabel(frame: CGRect(x: 10, y: UIApplication.shared.statusBarFrame.height + 20, width: 100, height: 25))
         lb.center = CGPoint(x: view.bounds.width / 2, y: lb.center.y)
@@ -372,10 +416,10 @@ public class BYImagePreviewView: UIViewController {
 
     private lazy var saveButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "save"), for: .normal)
+        btn.setImage(UIImage(named: "video_save_icon"), for: .normal)
         btn.sizeToFit()
         var fm = btn.frame
-        fm.origin.x = view.bounds.width - 25 - btn.frame.width
+        fm.origin.x = view.bounds.width - 25 - btn.bounds.width
         fm.origin.y = view.bounds.height - 30 - fm.height
         fm.size.width = fm.width + 10
         fm.size.height = fm.height + 15
@@ -400,6 +444,7 @@ extension BYImagePreviewView: UICollectionViewDelegate, UICollectionViewDataSour
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let dl = delegate else { return }
         let cl = cell as! BYImagePreviewCell
+        cl.imageDisplayMode = imageDisplayMode
         let placeholderImage = dl.by_imagePreview(self, placeholderImageAt: indexPath.item)
         let source = dl.by_imagePreview(self, imageSourceAt: indexPath.item)
         cl.setImageSouce(source: source, withPlaceholderImage: placeholderImage)
@@ -407,11 +452,13 @@ extension BYImagePreviewView: UICollectionViewDelegate, UICollectionViewDataSour
             guard let self = self else { return }
             self.dismiss()
         }
+        dl.by_imagePreview(self, willDisplayAt: indexPath.item)
     }
 
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cl = cell as! BYImagePreviewCell
         cl.resetZoom()
+        delegate?.by_imagePreview(self, didEndDisplayingAt: indexPath.item)
     }
 }
 
@@ -420,6 +467,7 @@ extension BYImagePreviewView: UIScrollViewDelegate {
         let offsetX = scrollView.contentOffset.x
         let idx = offsetX / scrollView.frame.width
         curDisplayIndex = Int(idx)
+        pageControl.currentPage = curDisplayIndex
         countLabel.text = "\(curDisplayIndex)/\(delegate?.by_numberOfImages(in: self) ?? 0)"
     }
 }
@@ -429,6 +477,12 @@ class BYImagePreviewCell: UICollectionViewCell {
     var singeTapHandler: (() -> Void)?
     /// 图片
     private(set) var image: UIImage?
+    var imageDisplayMode = UIView.ContentMode.scaleToFill {
+        didSet {
+            imageView.contentMode = imageDisplayMode
+        }
+    }
+
     var scale: CGFloat {
         scrollView.zoomScale
     }

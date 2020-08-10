@@ -527,7 +527,7 @@
 				DEVELOPMENT_TEAM = 8E42QMX22R;
 				INFOPLIST_FILE = BYImagePreview/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = BYImagePreviewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -544,7 +544,7 @@
 				DEVELOPMENT_TEAM = 8E42QMX22R;
 				INFOPLIST_FILE = BYImagePreview/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = BYImagePreviewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
