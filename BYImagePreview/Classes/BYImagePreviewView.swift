@@ -109,6 +109,11 @@ public class BYImagePreviewView: UIViewController {
     /// 从某个视图弹出
     private var fromView: UIImageView?
 
+    private lazy var statusBarHeight: CGFloat = {
+        let manger = UIApplication.shared.windows.first { $0.isKeyWindow }?.windowScene?.statusBarManager
+        return manger?.statusBarFrame.height ?? 0
+    }()
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -131,7 +136,6 @@ public class BYImagePreviewView: UIViewController {
     private func setupView() {
         view.backgroundColor = .black
         view.isUserInteractionEnabled = true
-        automaticallyAdjustsScrollViewInsets = false
         view.addSubview(collectionView)
         view.addSubview(pageControl)
         view.addSubview(countLabel)
@@ -225,7 +229,8 @@ public class BYImagePreviewView: UIViewController {
         view.backgroundColor = UIColor.black.withAlphaComponent(0)
         collectionView.isHidden = true
 
-        UIApplication.shared.keyWindow?.addSubview(view)
+        let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
+        keyWindow?.addSubview(view)
         collectionView.frame = view.bounds
         controller.addChild(self)
 
@@ -391,7 +396,7 @@ public class BYImagePreviewView: UIViewController {
     }()
 
     private lazy var tipLabel: UILabel = {
-        let lb = UILabel(frame: CGRect(x: 10, y: UIApplication.shared.statusBarFrame.height + 20, width: 100, height: 25))
+        let lb = UILabel(frame: CGRect(x: 10, y: statusBarHeight + 20, width: 100, height: 25))
         lb.center = CGPoint(x: view.bounds.width / 2, y: lb.center.y)
         lb.font = UIFont.systemFont(ofSize: 18)
         lb.textAlignment = .center
@@ -403,7 +408,7 @@ public class BYImagePreviewView: UIViewController {
     }()
 
     private lazy var countLabel: UILabel = {
-        let lb = UILabel(frame: CGRect(x: 10, y: UIApplication.shared.statusBarFrame.height + 20, width: 100, height: 25))
+        let lb = UILabel(frame: CGRect(x: 10, y: statusBarHeight + 20, width: 100, height: 25))
         lb.center = CGPoint(x: view.bounds.width / 2, y: lb.center.y)
         lb.font = UIFont.systemFont(ofSize: 18)
         lb.textAlignment = .center
@@ -646,7 +651,7 @@ class BYImagePreviewCell: UICollectionViewCell {
     }()
 
     private lazy var loadingView: UIActivityIndicatorView = {
-        let v = UIActivityIndicatorView(style: .whiteLarge)
+        let v = UIActivityIndicatorView(style: .large)
         v.hidesWhenStopped = true
         v.center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
         return v

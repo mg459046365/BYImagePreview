@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BYImagePreview'
-  s.version          = '1.0.4'
+  s.version          = '1.0.5'
   s.summary          = '简易图片预览器'
 
 # This description is used to generate tags and improve search results.
@@ -28,8 +28,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/mg459046365/BYImagePreview.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
-  s.platform = :ios, '10.0'
+  s.ios.deployment_target = '13.0'
+  s.platform = :ios, '13.0'
   s.swift_version = '5.0'
   s.swift_versions = ['5.0']
 
